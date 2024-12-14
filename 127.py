@@ -1,0 +1,2 @@
+def multi(T):
+    for 

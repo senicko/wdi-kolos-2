@@ -30,7 +30,7 @@ def find(T):
 
         # Jezeli dwa elementy w tym kierunku tworza podciag ciagu fibonacciego
         if is_fib(T[r][c], T[r + dr][c + dc]):
-            seq = 2
+            seq_len = 2
             a = (r, c)
             b = (r + dr, c + dc)
 
@@ -40,13 +40,11 @@ def find(T):
                 and T[b[0] + dr][b[1] + dc] == T[a[0]][a[1]] + T[b[0]][b[1]]
             ):
                 a, b = b, (b[0] + dr, b[1] + dc)
-                seq += 1
+                seq_len += 1
 
-            return seq
+            return seq_len
 
         return 0
-
-    maximum = 0
 
     for r in range(n):
         for c in range(n):
@@ -55,26 +53,26 @@ def find(T):
             result = max(
                 [
                     check_direction(r, c, (1, 0)),
-                    check_direction(r, c, (-1, 0)),
                     check_direction(r, c, (0, 1)),
-                    check_direction(r, c, (0, -1)),
+                    # Malejace ciagi szukamy od konca
+                    check_direction(n - r - 1, n - c - 1, (-1, 0)),
+                    check_direction(n - r - 1, n - c - 1, (0, -1)),
                 ]
             )
 
-            # Aktualizujemy ostateczne znalezione maksimum
-            # (z innego punktu mozemy znalezc dluzszy podciag)
-            maximum = max(maximum, result)
+            if result > 2:
+                return result
 
-    return maximum if maximum > 2 else 0
+    return 0
 
 
 t = [
-    [1, 8, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 2, 1, 1, 1, 1],
+    [1, 3, 1, 5, 1, 1],
     [1, 5, 1, 1, 1, 1],
-    [1, 3, 1, 1, 1, 1],
-    [1, 2, 1, 5, 1, 1],
-    [1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1],
+    [1, 8, 1, 1, 1, 1],
 ]
 
 print(find(t))
