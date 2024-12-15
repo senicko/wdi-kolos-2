@@ -18,7 +18,6 @@ def digit_ok(board, at_r, at_c, d):
 
 def sudoku_solver(board, r=0, c=0):
     if r == 9:
-        print(*board, sep="\n")
         return True
 
     # Funkcja pomocnicza do okreslania nastepnej pozycji w sudoku
@@ -61,3 +60,5 @@ board = [
 ]
 
 sudoku_solver(board)
+
+print(*board, sep="\n")
