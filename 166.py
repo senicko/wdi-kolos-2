@@ -1,31 +1,25 @@
 def solve(shards_a, shards_b):
-    len_a = len(shards_a)
-    len_b = len(shards_b)
+    def permutations(t, i=0):
+        if i == len(t):
+            return ["".join(t)]
 
-    used_a = [0 for _ in range(len(shards_a))]
-    used_b = [0 for _ in range(len(shards_b))]
+        result = []
 
-    def rec(word_a="", word_b=""):
-        if min(used_a) == 1 and min(used_b) == 1:
-            return word_a == word_b
+        for j in range(i, len(t)):
+            t[i], t[j] = t[j], t[i]
+            result += permutations(t, i + 1)
+            t[i], t[j] = t[j], t[i]
 
-        possible = False
+        return result
 
-        for i in range(len_a):
-            if used_a[i] == 0:
-                used_a[i] = 1
-                possible = possible or rec(word_a + shards_a[i], word_b)
-                used_a[i] = 0
+    permutations_a = permutations(shards_a)
+    permutations_b = permutations(shards_b)
 
-        for i in range(len_b):
-            if used_b[i] == 0:
-                used_b[i] = 1
-                possible = possible or rec(word_a, word_b + shards_b[i])
-                used_b[i] = 0
+    for a in permutations_a:
+        if a in permutations_b:
+            return True
 
-        return possible
-
-    return rec()
+    return False
 
 
 print(solve(["ab", "cde", "cfed", "fab"], ["abc", "abc", "def", "fed"]))
